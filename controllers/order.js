@@ -2,6 +2,7 @@ const { Order, CartItem } = require('../models/order');
 const { errorHandler } = require('../helpers/dbErrorHandler');
 const DBCounters = require('../models/dbcounters');
 const User = require('../models/user');
+const { sendOrderRecieveEmailToContact, sendOrderConfirmationEmailToBuyer } = require('../services/emailService');
 
 exports.orderById = (req, res, next, id) => {
     Order.findById(id)
@@ -91,7 +92,12 @@ exports.create = async (req, res) => {
                 }
                 console.log('Done successfully');
                 // we are done with no error here...
-                // send the order info to client
+                // before send the order info to client
+                // send emails out 
+                sendOrderRecieveEmailToContact(order);
+                sendOrderConfirmationEmailToBuyer(order);
+
+                //done.
                 res.json(orderData);
             }
         );
