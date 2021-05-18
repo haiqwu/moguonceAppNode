@@ -1,37 +1,38 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const { ObjectId } = mongoose.Schema;
- 
+
 const CartItemSchema = new mongoose.Schema(
-    {
-        product: { type: ObjectId, ref: "Product" },
-        name: String,
-        price: Number,
-        count: Number
-    },
-    { timestamps: true }
+  {
+    product: { type: ObjectId, ref: "Product" },
+    name: String,
+    price: Number,
+    count: Number,
+  },
+  { timestamps: true }
 );
 
 const CartItem = mongoose.model("CartItem", CartItemSchema);
 
 const shippingSchema = {
-    full_name: String,
-    street_address: { type: String, required: true },
-    city: { type: String, required: true },
-    state: String,
-    postal_code: { type: String, required: true },
-    country_code: { type: String, required: true },
-    tracking_number: String,
-    shipping_career: String,
-    shipping_method: String,
+  full_name: String,
+  street_address: { type: String, required: true },
+  // street_address2: { type: String },
+  city: { type: String, required: true },
+  state: String,
+  postal_code: { type: String, required: true },
+  country_code: { type: String, required: true },
+  tracking_number: String,
+  shipping_career: String,
+  shipping_method: String,
 };
 
 const paypalPayerSchema = {
-    paypal_payer_id: String,
-    email: String,
-    last_name: String,
-    first_name: String,
-    phone: String,
+  paypal_payer_id: String,
+  email: String,
+  last_name: String,
+  first_name: String,
+  phone: String,
 };
 
 const OrderSchema = new mongoose.Schema(
@@ -49,12 +50,19 @@ const OrderSchema = new mongoose.Schema(
     paypal_payer_info: paypalPayerSchema,
     shipping: shippingSchema,
     status: {
-        type: String,
-        default: "Not processed",
-        enum: ["Not processed", "Processing", "Shipped", "Delivered", "Cancelled", "Back Ordered"] // enum means string objects
+      type: String,
+      default: "Not processed",
+      enum: [
+        "Not processed",
+        "Processing",
+        "Shipped",
+        "Delivered",
+        "Cancelled",
+        "Back Ordered",
+      ], // enum means string objects
     },
     updated: Date, // ?
-    user: { type: ObjectId, ref: "User" }
+    user: { type: ObjectId, ref: "User" },
   },
   { timestamps: true }
 );
